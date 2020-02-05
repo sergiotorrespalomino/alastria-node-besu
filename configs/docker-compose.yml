@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+  server:
+    container_name: ethstats-network-server
+    image: alethio/ethstats-network-server:latest
+    restart: always
+    depends_on:
+      - deepstream
+    ports:
+      - 0.0.0.0:3000:3000
+      - 0.0.0.0:3030:3030
+      - 127.0.0.1:8888:8888
+    environment:
+      - NETWORK_ID=2020
+      - NETWORK_NAME=alastria-besu
+      - LITE=1
+      - LITE_DB_PERSIST=0
+      - LITE_API_PORT=3030
+      - APP_PORT=3000
+      - METRICS_PORT=8888
+      - DEEPSTREAM_HOST=deepstream
+    command: ["./bin/app.js", "-v"]
+  deepstream:
+    container_name: ethstats-network-deepstream
+    image: deepstreamio/deepstream.io:3.2.2
+    restart: always
+    ports:
+      - 0.0.0.0:6020:6020
+  dashboard:
+    container_name: ethstats-network-dashboard
+    image: alethio/ethstats-network-dashboard:latest
+    restart: always
+    depends_on:
+      - server
+    volumes:
+      - ../../config/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - 0.0.0.0:80:80
+    environment:
+      - NETSTATS_API_URL=http://52.48.45.179:3030
+      - DS_URL=52.48.45.179:6020
+      - DS_USER=frontend
+      - DS_PASS=
