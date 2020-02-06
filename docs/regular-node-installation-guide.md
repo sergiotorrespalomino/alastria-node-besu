@@ -10,8 +10,7 @@ Use this procedure for creating a new regular node for the Besu Network ("Red B"
 2. [Orion Installation](#orion)
 3. [Besu Installation](#besu)
 4. [Request access to the network](#access)
-5. [Network Stats](#stats)
-6. [Upgrade Besu](#upgrade-besu)
+5. [Upgrade Besu](#5-upgrade-besu)
 
 ---
 
@@ -198,18 +197,7 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"net_enode","params":[],"id":1}' 
    - **any Address** you want to send transactions from (for adding to the Accounts Whitelist)
 
 
-## <a name="stats"></a>5. Network Stats
-
-If you want your node to be displayed in [Red B Network Monitoring](http://52.48.45.179), you have to run the following command, changing __email__ and __node_name__:
-
-:info: Only validators and selected nodes will be displayed in [Red B Network Monitoring](http://52.48.45.179)
-
-```sh
-docker run -d --restart=always --name ethstats-client --net host --entrypoint "./bin/ethstats-cli.js" alethio/ethstats-cli --register --account-email <email> --node-name <node_name> --server-url http://52.48.45.179:3000 --client-url ws://127.0.0.1:8546
-```
-
-
-## 6. Upgrade Besu
+## 5. Upgrade Besu
 
 To upgrade besu to the latest version, simply run: 
 
