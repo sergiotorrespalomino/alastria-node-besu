@@ -113,11 +113,11 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"net_enode","params":[],"id":1}' 
 
 1. [Get your **enode**](#enode)
 2. [Get your **Node Address**](#node_address)
-
-3. Send to Alastria Besu Core Team
-   - [ ] :warning: _HOW?? (TBD)_
-   - your **enode** (for registering your Node as a **Whitelisted Node** in the network)
-   - your **Node Address** (for voting up your node as a Validator)
+3. Request the registration of your node in the network to Alastria Besu Core Team:
+    - Follow the [Guide in the Wiki](https://github.com/alastria/alastria-node-besu/wiki#0-permissioning)
+    - Send:
+        - your **enode** (for registering your Node as a **Whitelisted Node** in the network)
+        - your **Node Address** (for voting up your node as a Validator)
 
 
 ## <a name="stats"></a>4. Network Stats
