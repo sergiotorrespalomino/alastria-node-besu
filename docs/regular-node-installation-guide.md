@@ -191,8 +191,7 @@ curl -X POST --data '{"jsonrpc":"2.0","method":"net_enode","params":[],"id":1}' 
 1. [Get your **enode**](#enode)
 2. [Get your **SignerKey Address**](#signer_key)
 3. Request the registration of your node in the network to Alastria Besu Core Team:
-    - Follow the [Guide in the Wiki](https://github.com/alastria/alastria-node-besu/wiki#0-permissioning)
-    - Send:
+    - Follow the [Guide in the Wiki](https://github.com/alastria/alastria-node-besu/wiki#0-permissioning), sending:
         - your **enode** (for registering your Node as a **Whitelisted Node** in the network)
         - your **SignerKey Address** (for adding to the Accounts Whitelist)
         - **any Address** you want to send transactions from (for adding to the Accounts Whitelist)
