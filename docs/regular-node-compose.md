@@ -110,7 +110,7 @@ export BESU_P2P_HOST=`dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/
 Set the `ORION_NODEURL` environment variable to the public IP address of your node
 
 ```sh
-export ORION_NODEURL=http://`dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null || curl -s --retry 2 icanhazip.com`:8080
+export ORION_NODEURL=http://$BESU_P2P_HOST:8080
 ```
 
 Set the `ACCOUNT_EMAIL` environment variable to your email
