@@ -1,0 +1,90 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:12
+    container_name: postgres
+    ports:
+      - 5432
+    volumes:
+      - ./config/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
+  orion:
+    image: pegasyseng/orion:develop
+    depends_on:
+      - postgres
+    container_name: orion
+    environment:
+      - ORION_NODEURL=${ORION_NODEURL}
+      - LOG4J_CONFIGURATION_FILE=/config/orion/log-config.xml
+    ports:
+      - 8080:8080
+    volumes:
+      - ./config/orion:/config/orion
+      - ./keys/orion:/keys/orion
+      - ./logs/orion:/var/log/
+      - orion-database:/opt/orion/database
+      - orion-routerdb:/opt/orion/routerdb
+    command: ["/config/orion/orion.conf"]
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/upcheck"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  besu:
+    image: hyperledger/besu:1.4
+    container_name: besu
+    environment:
+      - BESU_P2P_HOST=${BESU_P2P_HOST}
+    depends_on:
+      - orion
+    ports:
+      - 30303:30303/udp
+      - 30303:30303/tcp
+      - 8545:8545
+    volumes:
+      - ./config/besu:/config/besu/
+      - ./keys/besu/key:/opt/besu/data/key
+      - ./keys/besu/signer.key:/keys/besu/signer.key
+      - ./keys/orion/nodekey.pub:/keys/orion/orion.pub
+      - besu-database:/opt/besu/data/database
+    command: ["--config-file=/config/besu/config.toml"]
+
+  prometheus:
+    image: prom/prometheus:v2.15.2
+    container_name: prometheus
+    depends_on:
+      - besu
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus:/etc/prometheus
+
+  ethstats-cli:
+    image: alethio/ethstats-cli
+    container_name: ethstats
+    depends_on:
+      - besu
+    entrypoint: ./bin/ethstats-cli.js
+    command:
+      [
+        "--register",
+        "--account-email",
+        "${ACCOUNT_EMAIL}",
+        "--node-name",
+        "${NODE_NAME}",
+        "--server-url",
+        "http://52.48.45.179:3000",
+        "--client-url",
+        "ws://besu:8546",
+      ]
+
+volumes:
+  orion-database:
+  orion-routerdb:
+  besu-database:
+  postgres-data:

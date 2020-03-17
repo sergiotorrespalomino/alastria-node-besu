@@ -59,6 +59,14 @@ You'll need to open the following ports in both ways to deploy a node:
 
 * [Validator node Installation Guide](docs/validator-node-installation-guide.md)
 
+### [Regular node] Besu node + Orion + Prometheus + Ethstats-cli with Docker Compose
+
+* [Regular node Compose Guide](docs/regular-node-compose.md)
+
+### [Validator node] Besu node + Orion + Prometheus + Ethstats-cli with Docker Compose
+
+* [Validator node Compose Guide](docs/validator-node-compose.md)
+
 ### Node monitoring
 
 * [Prometheus and Grafana Monitoring](docs/prometheus-grafana.md)

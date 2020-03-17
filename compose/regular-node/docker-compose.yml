@@ -1,0 +1,66 @@
+version: "2"
+services:
+  orion:
+    image: pegasyseng/orion:1.5
+    environment:
+      - LOG4J_CONFIGURATION_FILE=/config/orion/log-config.xml
+      - JAVA_OPTS=-Xms512m -Xmx4096m
+    ports:
+      - 8080:8080
+    volumes:
+      - ./config/orion:/config/orion
+      - ./keys/orion:/keys/orion
+      - orion-database:/opt/orion/database
+      - orion-routerdb:/opt/orion/routerdb
+    command: ["/config/orion/orion.conf"]
+    mem_limit: 3584m
+    restart: always
+
+  besu:
+    image: hyperledger/besu:1.4
+    environment:
+      - BESU_P2P_HOST=${BESU_P2P_HOST}
+    depends_on:
+      - orion
+    ports:
+      - 30303:30303/udp
+      - 30303:30303/tcp
+      - 8545:8545
+    volumes:
+      - ./config/besu:/config/besu/
+      - ./keys/besu/key:/opt/besu/data/key
+      - ./keys/besu/signer.key:/keys/besu/signer.key
+      - ./keys/orion/nodekey.pub:/keys/orion/orion.pub
+      - besu-database:/opt/besu/data/database
+    command: ["--config-file=/config/besu/config.toml"]
+
+  prometheus:
+    image: prom/prometheus:v2.15.2
+    depends_on:
+      - besu
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus:/etc/prometheus
+
+  ethstats-cli:
+    image: alethio/ethstats-cli
+    depends_on:
+      - besu
+    entrypoint: ./bin/ethstats-cli.js
+    command: [
+      "--register",
+      "--account-email",
+      "${ACCOUNT_EMAIL}",
+      "--node-name",
+      "${NODE_NAME}",
+      "--server-url",
+      "http://52.48.45.179:3000",
+      "--client-url",
+      "ws://besu:8546"
+    ]
+
+volumes:
+  orion-database:
+  orion-routerdb:
+  besu-database:
