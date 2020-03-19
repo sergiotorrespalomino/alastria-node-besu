@@ -39,7 +39,7 @@ echo passw0rd > keys/orion/passwordFile
 
 Generate your orion node key pair. This will prompt you to enter a password, use the same one you used in the passwordFile
 ```sh
-docker container run -v `pwd`/keys/orion:/keys/orion -w /keys/orion -it --rm pegasyseng/orion:1.5 -g nodekey
+docker container run -v `pwd`/keys/orion:/keys/orion -w /keys/orion -it --rm pegasyseng/orion:1.5.1-SNAPSHOT -g nodekey
 ```
 
 ### New Besu Configuration

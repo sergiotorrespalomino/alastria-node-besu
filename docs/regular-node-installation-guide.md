@@ -29,10 +29,10 @@ $ sudo usermod -aG docker ubuntu
 Pull Orion and Besu Docker images and tag the images
 
 ```sh
-$ docker image pull pegasyseng/orion:1.5.0-SNAPSHOT
+$ docker image pull pegasyseng/orion:1.5.1-SNAPSHOT
 $ docker image pull hyperledger/besu
 
-$ docker image tag pegasyseng/orion:1.5.0-SNAPSHOT orion
+$ docker image tag pegasyseng/orion:1.5.1-SNAPSHOT orion
 $ docker image tag hyperledger/besu besu
 ```
 

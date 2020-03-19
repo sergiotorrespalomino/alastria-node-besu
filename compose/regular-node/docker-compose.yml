@@ -1,7 +1,7 @@
 version: "2"
 services:
   orion:
-    image: pegasyseng/orion:1.5
+    image: pegasyseng/orion:1.5.1-SNAPSHOT
     environment:
       - LOG4J_CONFIGURATION_FILE=/config/orion/log-config.xml
       - JAVA_OPTS=-Xms512m -Xmx4096m
